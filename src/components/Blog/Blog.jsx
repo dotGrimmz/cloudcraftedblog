@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import Header from "../Header/Header";
@@ -9,6 +9,9 @@ import wingspics from "../../images/wingspics.JPG";
 import Grid from "@material-ui/core/Grid";
 import hibachi from "../../images/hibachi.jpg";
 import pizza from "../../images/pizza.jpg";
+import AlleyKatz1 from "../../images/AlleyKatz1.jpg";
+import AlleyKatz2 from "../../images/AlleyKatz2.jpg";
+import AlleyKatz3 from "../../images/AlleyKatz3.jpg";
 import MainPost from "../MainPost/MainPost";
 import Sidebar from "../Sidebar/Sidebar";
 import GitHubIcon from "@material-ui/icons/GitHub";
@@ -17,10 +20,13 @@ import TwitterIcon from "@material-ui/icons/Twitter";
 import Previews from "../Previews/Previews";
 import arcade from "../../images/arcade.jpg";
 import { useHistory } from "react-router-dom";
+import CCContext from "../../context/CCContext";
 
 const Blog = (props) => {
   const classes = useStyles();
   const history = useHistory();
+  const context = useContext(CCContext);
+  const { setFeaturedPagePost } = context;
 
   const navigateToCreate = () => {
     history.push("/create");
@@ -29,6 +35,12 @@ const Blog = (props) => {
   const navigateToLogin = () => {
     history.push("/login");
   };
+
+  const navigateToFeature = (post) => {
+    history.push("/feature");
+    setFeaturedPagePost(post);
+  };
+  console.log(setFeaturedPagePost);
 
   return (
     <>
@@ -40,7 +52,10 @@ const Blog = (props) => {
           navigationBtnLabel={"Create Blog"}
         />
         <main>
-          <FeaturedPost post={mainFeaturedPost} />
+          <FeaturedPost
+            post={mainFeaturedPost}
+            navigateToFeature={navigateToFeature}
+          />
           <Grid container spacing={4}>
             {featuredPosts.map((post) => (
               <MainPost key={post.title} post={post} />
@@ -75,9 +90,10 @@ const mainFeaturedPost = {
   title: "A Night at Alley Katz",
   description:
     "This was my second vist to Alley Katz and the wing are no fluke. A bit more on the pricy side",
-  image: `url(${wingspics})`,
+  imageBG: `url(${wingspics})`,
   imgText: "main image description",
   linkText: "Continue reading…",
+  images: [wingspics, AlleyKatz1, AlleyKatz2, AlleyKatz3],
 };
 
 const featuredPosts = [
@@ -145,19 +161,6 @@ const sidebar = {
     { name: "Facebook", icon: FacebookIcon },
   ],
 };
-
-// const sections = [
-//   { title: "Technology", url: "#" },
-//   { title: "Design", url: "#" },
-//   { title: "Culture", url: "#" },
-//   { title: "Business", url: "#" },
-//   { title: "Politics", url: "#" },
-//   { title: "Opinion", url: "#" },
-//   { title: "Science", url: "#" },
-//   { title: "Health", url: "#" },
-//   { title: "Style", url: "#" },
-//   { title: "Travel", url: "#" },
-// ];
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {

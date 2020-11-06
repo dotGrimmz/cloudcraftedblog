@@ -5,17 +5,22 @@ import CreateBlog from "./components/CreateBlog/CreateBlog";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import LoginPage from "../src/components/LoginPage/LoginPage";
+import FeaturePage from "../src/components/FeaturePage/FeaturePage";
+import ContextImplementation from "../src/context/ContextImplementation";
 
 function App() {
   return (
     <>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Router>
-          <Route path="/home" exact component={Blog} />
-          <Route path="/create" component={CreateBlog} />
-          <Route path="/login" component={LoginPage} />
-        </Router>
-      </MuiPickersUtilsProvider>
+      <ContextImplementation>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <Router>
+            <Route path="/home" exact component={Blog} />
+            <Route path="/create" component={CreateBlog} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/feature" component={FeaturePage} />
+          </Router>
+        </MuiPickersUtilsProvider>
+      </ContextImplementation>
     </>
   );
 }

@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import Container from "@material-ui/core/Container";
 import Header from "../Header/Header";
 import { useHistory } from "react-router-dom";
-import Card from "@material-ui/core/Card";
-import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import FilterDramaIcon from "@material-ui/icons/FilterDrama";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Footer from "../Footer/Footer";
+import CloudCraftedService from "../../service/CloudCraftedService";
 
 const LoginPage = (props) => {
   const history = useHistory();
+  const service = new CloudCraftedService();
   const [credentials, setCredentials] = useState({
     userName: "",
     password: "",
@@ -25,6 +25,16 @@ const LoginPage = (props) => {
     let obj = { ...credentials, [e.target.name]: e.target.value };
     setCredentials(obj);
     console.log(obj);
+  };
+
+  const authenticateUser = async () => {
+    try {
+      await service.authenticateCredentials(credentials).then((response) => {
+        setCredentials(response.data);
+      });
+    } catch (err) {
+      console.log("Error message:", err);
+    }
   };
 
   const styles = {
@@ -82,7 +92,12 @@ const LoginPage = (props) => {
             size="small"
           />
           <Box align="center">
-            <Button variant="contained" color="primary" type="submit">
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              onClick={() => authenticateUser()}
+            >
               Log In
             </Button>
           </Box>
