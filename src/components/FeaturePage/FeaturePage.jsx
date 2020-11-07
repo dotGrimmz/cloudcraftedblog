@@ -1,22 +1,16 @@
-import React, { useContext, useState, useEffect, useCallback } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Container from "@material-ui/core/Container";
 import Header from "../Header/Header";
 import { useHistory } from "react-router-dom";
 import CCContext from "../../context/CCContext";
-import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import "../../css/FeaturePage.css";
+import Slide from "@material-ui/core/Slide";
 
 const FeaturePage = (props) => {
   const history = useHistory();
   const context = useContext(CCContext);
   const { FeaturePagePost } = context;
-  const [hover, setHover] = useState(false);
-
-  const [imgAnimationStyle, setImgAnimationStype] = useState({
-    item: "",
-    bg: "",
-  });
 
   const styles = {
     images: {
@@ -36,15 +30,6 @@ const FeaturePage = (props) => {
       flexDirection: "row",
       height: "70vh",
     },
-    item: {
-      flex: imgAnimationStyle.img,
-      backgroundPosition: "center",
-      backgroundSize: "cover",
-      backgroundRepeat: "no-repeat",
-      transition: "flex, 0.8, ease",
-      height: "250px",
-      width: "200px",
-    },
   };
 
   const [post, setPost] = useState({
@@ -53,29 +38,17 @@ const FeaturePage = (props) => {
     images: FeaturePagePost.images || [],
   });
 
-  useEffect(() => {
-    setPost(FeaturePagePost);
-  }, [context]);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (hover) {
-      setImgAnimationStype({ bg: "red", img: "1 1 9" });
-      console.log("this should be 7");
-    } else {
-      setImgAnimationStype({ bg: "blue", img: "7 1 0" });
-      console.log("this should be 4");
-    }
-  }, [hover]);
+    setPost(FeaturePagePost);
+    setOpen(true);
+  }, [context]);
 
   const navigateToHome = () => {
     history.push("/home");
   };
 
-  const hoverImg = (e) => {
-    e.target.style.flex = "7, 1, 0";
-  };
-  console.log("hoverevent next", hover);
-  //build image accordian next
   return (
     <Container maxWidth="lg" align="center">
       <Header
@@ -86,24 +59,25 @@ const FeaturePage = (props) => {
       <Container maxWidth="md">
         <Grid container>
           <Grid item xs={12}>
-            <Typography variant="h2">{post.title}</Typography>
+            <p className="title">{post.title}</p>
           </Grid>
           <Grid item>
-            <Typography variant="h4">{post.description}</Typography>
+            <p className="description">{post.description}</p>
           </Grid>
 
           <Grid container style={styles.galleryWrap}>
             {post &&
               post.images.map((image, i) => (
-                <Grid
-                  onMouseEnter={() => setHover(true)}
-                  onMouseOut={() => setHover(false)}
-                  item
-                  xs
+                <Slide
+                  in={open}
+                  direction="left"
+                  timeout={{ enter: 1000, exit: 1000 }}
                   key={i}
                 >
-                  <img src={image} alt="imageone" className="item" />
-                </Grid>
+                  <Grid item xs>
+                    <img src={image} alt="imageone" className="item" />
+                  </Grid>
+                </Slide>
               ))}
           </Grid>
         </Grid>

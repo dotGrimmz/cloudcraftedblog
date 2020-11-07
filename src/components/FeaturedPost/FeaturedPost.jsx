@@ -38,13 +38,11 @@ const useStyles = makeStyles((theme) => ({
 export default function MainFeaturedPost(props) {
   const classes = useStyles();
   const { post, navigateToFeature } = props;
-  console.log(post);
   return (
     <Paper
       className={classes.mainFeaturedPost}
       style={{ backgroundImage: `url(${post.imageBG})` }}
     >
-      {/* Increase the priority of the hero background image */}
       {
         <img
           style={{ display: "none" }}
@@ -65,7 +63,7 @@ export default function MainFeaturedPost(props) {
               {post.title}
             </Typography>
             <Typography variant="h5" color="inherit" paragraph>
-              {post.description}
+              {post.description.slice(0, 100)}
             </Typography>
             <Link
               variant="subtitle1"

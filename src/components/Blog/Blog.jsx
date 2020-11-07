@@ -40,7 +40,6 @@ const Blog = (props) => {
     history.push("/feature");
     setFeaturedPagePost(post);
   };
-  console.log(setFeaturedPagePost);
 
   return (
     <>
@@ -58,7 +57,11 @@ const Blog = (props) => {
           />
           <Grid container spacing={4}>
             {featuredPosts.map((post) => (
-              <MainPost key={post.title} post={post} />
+              <MainPost
+                key={post.title}
+                post={post}
+                navigateToFeature={navigateToFeature}
+              />
             ))}
           </Grid>
           <Grid
@@ -67,9 +70,9 @@ const Blog = (props) => {
             className={classes.mainGrid}
             justify="flex-start"
           >
-            {posts.map((entree) => (
-              <Grid item xs={8}>
-                <Previews post={entree} key={entree.title} />
+            {posts.map((entree, index) => (
+              <Grid item xs={8} key={index}>
+                <Previews post={entree} />
               </Grid>
             ))}
             <Sidebar
@@ -89,7 +92,7 @@ const Blog = (props) => {
 const mainFeaturedPost = {
   title: "A Night at Alley Katz",
   description:
-    "This was my second vist to Alley Katz and the wing are no fluke. A bit more on the pricy side",
+    "This was my second vist to Alley Katz and the wing are no fluke. A bit more on the pricy side. Stars and Strikes didnt have much to offer culinary wise. The food was cold and didnt taste well at all. We ordered mozzarella sticks and they were no better than what you would get out of a freezer at the local kroger but we paid for it so it got eaten. The arcade however was excellent. Guitar Hero was my favorite since it was the only thing I stood a chance in compeitivly against Angel. She beat me in blowling, hoops, and just about anything that was compeitive. The bumper cars section seemed too small for our taste so we opted out. All and all we would return just with full stomaches and a fully blown pre game at the house.",
   imageBG: `url(${wingspics})`,
   imgText: "main image description",
   linkText: "Continue reading…",
@@ -102,16 +105,17 @@ const featuredPosts = [
     date: "May 29, 2020",
     description:
       "The pizza was soggy and over priced. would not recommend at all!",
-    image: pizza,
     imageText: "Image Text",
+    images: [pizza],
+    signature: "Rakeem x Gordon",
   },
   {
     title: "Iniyabi",
     date: "Febuary 14, 2020",
     description:
       "Valentines Day at a Hibachi! The food was tasty and priced fairly equal among other Hibachi's of its kind",
-    image: hibachi,
-    imageText: "Image Text",
+    images: [hibachi],
+    signature: "Rakeem x Gordon",
   },
 ];
 
@@ -120,11 +124,13 @@ const posts = [
     title: "Star & Strikes",
     images: [arcade, pizza, hibachi, wingspics],
     date: "May 29, 2020",
+    signature: "Rakeem X Gordon",
     description:
       "Stars and Strikes didnt have much to offer culinary wise. The food was cold and didnt taste well at all. We ordered mozzarella sticks and they were no better than what you would get out of a freezer at the local kroger but we paid for it so it got eaten. The arcade however was excellent. Guitar Hero was my favorite since it was the only thing I stood a chance in compeitivly against Angel. She beat me in blowling, hoops, and just about anything that was compeitive. The bumper cars section seemed too small for our taste so we opted out. All and all we would return just with full stomaches and a fully blown pre game at the house.",
   },
   {
     title: "Oak Augusta",
+    signature: "Rakeem X Gordon",
     images: [arcade],
     date: "October 23, 2020",
     description:
@@ -132,6 +138,7 @@ const posts = [
   },
   {
     title: "Juicy Crab - Smyrna",
+    signature: "Rakeem X Gordon",
     images: [arcade],
     date: "October 24, 2020",
     description: "",

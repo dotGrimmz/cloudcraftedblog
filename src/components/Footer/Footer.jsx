@@ -23,13 +23,11 @@ const Footer = (props) => {
           {"."}
         </Typography>
         {navigateToLogin && (
-          <Link
-            onClick={() => navigateToLogin()}
-            variant="caption"
-            align="center"
-          >
-            Login
-          </Link>
+          <p style={{ textAlign: "center" }}>
+            <Link onClick={() => navigateToLogin()} variant="caption">
+              Login
+            </Link>
+          </p>
         )}
       </>
     );

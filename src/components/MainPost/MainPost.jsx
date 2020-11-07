@@ -24,13 +24,15 @@ const useStyles = makeStyles({
 
 function MainPost(props) {
   const classes = useStyles();
-  const { post } = props;
-  console.log(post.image, "post image");
-  console.log(pizza);
+  const { post, navigateToFeature } = props;
 
   return (
     <Grid item xs={12} md={6}>
-      <CardActionArea component="a" href="#">
+      <CardActionArea
+        component="a"
+        href="#"
+        onClick={() => navigateToFeature(post)}
+      >
         <Card className={classes.card}>
           <div className={classes.cardDetails}>
             <CardContent>
@@ -41,7 +43,7 @@ function MainPost(props) {
                 {post.date}
               </Typography>
               <Typography variant="subtitle1" paragraph>
-                {post.description}
+                {post.description.slice(0, 100)}
               </Typography>
               <Typography variant="subtitle1" color="primary">
                 Continue reading...
@@ -49,11 +51,7 @@ function MainPost(props) {
             </CardContent>
           </div>
           <Hidden xsDown>
-            <CardMedia
-              className={classes.cardMedia}
-              image={post.image}
-              title={post.imageTitle}
-            />
+            <CardMedia className={classes.cardMedia} image={post.images[0]} />
           </Hidden>
         </Card>
       </CardActionArea>

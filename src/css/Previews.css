@@ -1,0 +1,30 @@
+.root {
+  width: 100%;
+}
+
+.media {
+  height: 175px;
+  width: 200px;
+  border: "1px solid red";
+}
+
+.description {
+  text-indent: 5%;
+  padding-top: 1%;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: medium;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.title {
+  font-weight: bold;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 2px;
+}
+
+.signature {
+  font-size: smaller;
+  font-family: cursive;
+  text-align: right;
+}
