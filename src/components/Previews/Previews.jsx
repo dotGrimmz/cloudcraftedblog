@@ -32,7 +32,7 @@ const Previews = (props) => {
     return capitalized + paragraph;
   };
   return (
-    <Grid style={{ width: "100%" }}>
+    <Grid style={{ width: "100%", padding: "1%" }}>
       <Accordion onClick={() => handleImgRotation()}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Grid item xs={8}>
@@ -58,7 +58,7 @@ const Previews = (props) => {
                     <Grid item xs={12} align="right">
                       <p className="signature"> ~ {post.signature}</p>
                     </Grid>
-                    {clicked === false &&
+                    {!clicked &&
                       post.images.slice(0, 3).map((image, index) => (
                         <Grid item key={index}>
                           <Slide
@@ -70,7 +70,7 @@ const Previews = (props) => {
                           </Slide>
                         </Grid>
                       ))}
-                    {clicked === true &&
+                    {clicked &&
                       post.images.slice(2, 5).map((image, index) => (
                         <Grid item key={index}>
                           <Slide
