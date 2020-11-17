@@ -6,10 +6,12 @@ const app = express();
 const port = process.env.PORT || 5000;
 const MongoClient = require("mongodb").MongoClient;
 const assert = require("assert");
+const multer = require("multer");
+const bodyParser = require("body-parser");
 
 app.use(cors());
 app.use(express.json());
-
+app.use(bodyParser.urlencoded({ extended: true }));
 const uri = process.env.ATLAS_URI;
 
 mongoose
@@ -22,7 +24,7 @@ mongoose
     console.log(err, "did not connect");
   });
 
-MongoClient.connect(uri, function (err, client) {
+MongoClient.connect(uri, { useUnifiedTopology: true }, function (err, client) {
   assert.equal(null, err);
   client.close();
 });
@@ -34,7 +36,7 @@ connection.once("open", () => {
 
 const CloudController = require("./Controllers/CloudController");
 
-app.use("/", CloudController);
+app.use("/ccb", CloudController);
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
