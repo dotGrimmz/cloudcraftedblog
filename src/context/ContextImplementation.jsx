@@ -5,13 +5,42 @@ class ContextImplementation extends Component {
   setFeaturedPagePost = (post) => {
     this.setState({ FeaturePagePost: post });
   };
+
+  setUser = (credentials) => {
+    this.setState({ user: credentials });
+  };
+
+  getSignature = () => {
+    return this.state.userID === "Grimmz"
+      ? "Rakeem X. Gordon"
+      : "Angel J. McDay";
+  };
+
+  setBlogPost = (blog) => {
+    this.setState({ blogPost: blog });
+  };
+
+  logOut = () => {
+    this.setState({
+      user: {
+        userID: "",
+        password: "",
+      },
+    });
+  };
+
+  // storing credentials in context so the nav bar can show us buttons
   state = {
-    credentials: {
-      userID: this.userID || "",
-      password: this.password || "",
+    user: {
+      userID: "Grimmz",
+      password: "Password",
     },
     FeaturePagePost: {},
     setFeaturedPagePost: this.setFeaturedPagePost,
+    setUser: this.setUser,
+    logOut: this.logOut,
+    blogPost: {},
+    setBlogPost: this.setBlogPost,
   };
 
   render = () => {

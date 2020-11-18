@@ -25,6 +25,7 @@ const useStyles = makeStyles({
 function MainPost(props) {
   const classes = useStyles();
   const { post, navigateToFeature } = props;
+  //description should be at least 100 chars to avoid responsiveness bug
 
   return (
     <Grid item xs={12} md={6}>
@@ -42,6 +43,7 @@ function MainPost(props) {
               <Typography variant="subtitle1" color="textSecondary">
                 {post.date}
               </Typography>
+
               <Typography variant="subtitle1" paragraph>
                 {post.description.slice(0, 100)}
               </Typography>

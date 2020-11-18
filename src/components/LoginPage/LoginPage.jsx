@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Container from "@material-ui/core/Container";
 import Header from "../Header/Header";
 import { useHistory } from "react-router-dom";
@@ -7,11 +7,15 @@ import FilterDramaIcon from "@material-ui/icons/FilterDrama";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Footer from "../Footer/Footer";
+import CCContext from "../../context/CCContext";
 import CloudCraftedService from "../../service/CloudCraftedService";
 
 const LoginPage = (props) => {
   const history = useHistory();
   const service = new CloudCraftedService();
+  const context = useContext(CCContext);
+  const { setUser, user } = context;
+
   const [credentials, setCredentials] = useState({
     userName: "",
     password: "",
@@ -24,13 +28,13 @@ const LoginPage = (props) => {
   const handleValueChange = (e) => {
     let obj = { ...credentials, [e.target.name]: e.target.value };
     setCredentials(obj);
-    console.log(obj);
   };
 
   const authenticateUser = async () => {
     try {
       await service.authenticateCredentials(credentials).then((response) => {
-        setCredentials(response.data);
+        setUser(response.data);
+        navigateToHome();
       });
     } catch (err) {
       console.log("Error message:", err);
@@ -103,7 +107,7 @@ const LoginPage = (props) => {
           </Box>
         </Container>
       </Container>
-      <Footer />
+      <Footer navigateToHome={navigateToHome} />
     </>
   );
 };

@@ -11,16 +11,16 @@ const Header = (props) => {
   const { navigationBtnLabel, navigationMethod } = props;
   const location = useLocation();
   const context = useContext(CCContext);
-  const { credentials } = context;
+  const { user } = context;
   const currentPath = location.pathname;
 
   const authenticateUserCredentials = () => {
-    return credentials.userID !== "" && credentials.password !== "";
-  };
-
-  const correctURL = () => {
-    if (currentPath === "/home") return false;
-    return currentPath === "/login" ? "/login" : "/feature";
+    let notLoggedIn = user.userID !== "" && user.password !== "";
+    if (notLoggedIn && currentPath !== "/feature") {
+      return true;
+    } else if (currentPath === "/feature") {
+      return true;
+    }
   };
 
   return (
@@ -31,13 +31,6 @@ const Header = (props) => {
             {navigationBtnLabel}
           </Button>
         )}
-
-        {correctURL() ? (
-          <Button size="small" onClick={() => navigationMethod()}>
-            {navigationBtnLabel}
-          </Button>
-        ) : null}
-
         <Typography
           component="h2"
           variant="h5"

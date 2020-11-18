@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
+import CCContext from "../../context/CCContext";
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   footer: {
@@ -13,7 +15,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Footer = (props) => {
   const classes = useStyles();
-  const { description, title, navigateToLogin } = props;
+  const { description, title, navigateToLogin, navigateToHome } = props;
+  const context = useContext(CCContext);
+  const { user, logOut } = context;
+  const location = useLocation();
+  const currentPath = location.pathname;
+
   const Copyright = () => {
     return (
       <>
@@ -22,10 +29,24 @@ const Footer = (props) => {
           Cloud Crafted LLC {new Date().getFullYear()}
           {"."}
         </Typography>
-        {navigateToLogin && (
+        {user.userID === "" && currentPath !== "/login" && (
           <p style={{ textAlign: "center" }}>
             <Link onClick={() => navigateToLogin()} variant="caption">
               Login
+            </Link>
+          </p>
+        )}
+        {user.userID !== "" && (
+          <p style={{ textAlign: "center" }}>
+            <Link onClick={() => logOut()} variant="caption">
+              Log Out
+            </Link>
+          </p>
+        )}
+        {currentPath === "/login" && (
+          <p style={{ textAlign: "center" }}>
+            <Link onClick={() => navigateToHome()} variant="caption">
+              Back
             </Link>
           </p>
         )}

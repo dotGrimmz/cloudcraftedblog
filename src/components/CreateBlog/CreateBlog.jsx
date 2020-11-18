@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Header from "../Header/Header";
 import { useHistory } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
@@ -11,15 +11,23 @@ import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import IconButton from "@material-ui/core/IconButton";
 import Chip from "@material-ui/core/Chip";
+import CCContext from "../../context/CCContext";
+import CloudCraftedService from "../../service/CloudCraftedService";
 
 const CreateBlog = (props) => {
   const history = useHistory();
+  const service = new CloudCraftedService();
+  const context = useContext(CCContext);
+  const { setBlogPost, user, blogPost } = context;
+
   const [blog, setBlog] = useState({
     title: "",
     date: new Date().toLocaleString() || "",
     description: "",
     images: [],
   });
+
+  const [invalid, setInvalid] = useState(false);
   const handleValueChange = (e) => {
     let obj = { ...blog, [e.target.name]: e.target.value };
     setBlog(obj);
@@ -41,12 +49,35 @@ const CreateBlog = (props) => {
     }
   };
 
+  // const submitPost = async () => {
+  //   let userId = userCredentials._id;
+  //   console.log("user credentials on a new user", userCredentials);
+  //   // console.log("users id", userCredentials._id);
+  //   try {
+  //     let response = await service.postUserMessage(createUsersPost(), userId);
+  //     response.status === 200
+  //       ? (setPostSent(!postSent), navigation.navigate("Home"))
+  //       : alert("ERROR MESSAGE DID NOT SEND");
+  //     console.log("post successful", response);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+
   const navigateToHome = () => {
     history.push("/home");
   };
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    setInvalid(true);
+    try {
+      console.log(data, "data");
+      console.log(user.userID, "userid");
+      let response = await service.postUserBlog(data, user.userID);
+    } catch (err) {
+      console.log(err);
+    }
+    setInvalid(false);
   };
 
   const handleDeleteImg = (image) => {
@@ -82,6 +113,7 @@ const CreateBlog = (props) => {
       backgroundColor: "white",
     },
   };
+  console.log(blogPost, "this is the context blog");
 
   return (
     <Container maxWidth="lg">
@@ -131,10 +163,12 @@ const CreateBlog = (props) => {
             </Grid>
           </Card>
           <Button
+            disabled={invalid}
             style={styles.btn}
             variant="contained"
-            color="primary"
+            color={invalid ? "secondary" : "primary"}
             type="submit"
+            onClick={() => onSubmit(blog)}
           >
             Create Post
           </Button>

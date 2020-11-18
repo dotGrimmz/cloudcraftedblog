@@ -2,7 +2,8 @@ import axios from "axios";
 
 class CloudCraftedService {
   authenticateCredentials(body) {
-    return axios.post("http://localhost:5000/login", body);
+    console.log(body, "reporting body from service in UI");
+    return axios.post("http://localhost:5000/ccb/login", body);
   }
 
   getAllBlogs() {

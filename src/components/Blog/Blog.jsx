@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import Header from "../Header/Header";
@@ -21,14 +21,16 @@ import Previews from "../Previews/Previews";
 import arcade from "../../images/arcade.jpg";
 import { useHistory } from "react-router-dom";
 import CCContext from "../../context/CCContext";
-import Box from "@material-ui/core/Box";
+import { useLocation } from "react-router-dom";
 
 const Blog = (props) => {
   const classes = useStyles();
   const history = useHistory();
   const context = useContext(CCContext);
-  const { setFeaturedPagePost } = context;
+  const { setFeaturedPagePost, logOut, user, setUser } = context;
 
+  const location = useLocation();
+  const currentPath = location.pathname;
   const navigateToCreate = () => {
     history.push("/create");
   };
@@ -41,6 +43,17 @@ const Blog = (props) => {
     history.push("/feature");
     setFeaturedPagePost(post);
   };
+
+  const navigateToHome = () => {
+    history.push("/home");
+  };
+
+  useEffect(() => {
+    const handleLoggedInUser = () => {
+      setUser(user);
+    };
+    handleLoggedInUser();
+  }, [user]);
 
   return (
     <>
