@@ -18,9 +18,10 @@ const BlogSchema = new Schema(
       required: true,
       trim: true,
     },
-    images: {
-      data: Buffer,
-      contentType: String,
+    user: {
+      type: String,
+      required: true,
+      trim: true,
     },
   },
   {

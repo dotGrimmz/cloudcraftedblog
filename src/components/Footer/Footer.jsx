@@ -8,7 +8,7 @@ import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   footer: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: "transparent",
     padding: theme.spacing(6, 0),
   },
 }));
@@ -26,7 +26,7 @@ const Footer = (props) => {
       <>
         <Typography variant="body2" color="textSecondary" align="center">
           {"Copyright © "}
-          Cloud Crafted LLC {new Date().getFullYear()}
+          Jus Grimmz Blog LLC {new Date().getFullYear()}
           {"."}
         </Typography>
         {user.userID === "" && currentPath !== "/login" && (
@@ -52,6 +52,12 @@ const Footer = (props) => {
         )}
       </>
     );
+  };
+
+  const styles = {
+    root: {
+      backgroundColor: "lightblue",
+    },
   };
 
   return (

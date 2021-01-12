@@ -7,6 +7,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import LoginPage from "../src/components/LoginPage/LoginPage";
 import FeaturePage from "../src/components/FeaturePage/FeaturePage";
 import ContextImplementation from "../src/context/ContextImplementation";
+import Movers from "./components/Movers/Movers";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/create" component={CreateBlog} />
             <Route path="/login" component={LoginPage} />
             <Route path="/feature" component={FeaturePage} />
+            <Route path="/movers" component={Movers} />
           </Router>
         </MuiPickersUtilsProvider>
       </ContextImplementation>

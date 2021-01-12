@@ -24,7 +24,6 @@ const CreateBlog = (props) => {
     title: "",
     date: new Date().toLocaleString() || "",
     description: "",
-    images: [],
   });
 
   const [invalid, setInvalid] = useState(false);
@@ -49,35 +48,23 @@ const CreateBlog = (props) => {
     }
   };
 
-  // const submitPost = async () => {
-  //   let userId = userCredentials._id;
-  //   console.log("user credentials on a new user", userCredentials);
-  //   // console.log("users id", userCredentials._id);
-  //   try {
-  //     let response = await service.postUserMessage(createUsersPost(), userId);
-  //     response.status === 200
-  //       ? (setPostSent(!postSent), navigation.navigate("Home"))
-  //       : alert("ERROR MESSAGE DID NOT SEND");
-  //     console.log("post successful", response);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
+  const submitPost = async () => {
+    let userId = user.userID;
+    console.log("user credentials on a new user", userId);
+    // console.log("users id", userCredentials._id);
+    try {
+      let response = await service.postUserBlog(blog, userId, {});
+      response.status === 200
+        ? navigateToHome()
+        : alert("ERROR MESSAGE DID NOT SEND");
+      console.log("post successful", response);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const navigateToHome = () => {
     history.push("/home");
-  };
-
-  const onSubmit = async (data) => {
-    setInvalid(true);
-    try {
-      console.log(data, "data");
-      console.log(user.userID, "userid");
-      let response = await service.postUserBlog(data, user.userID);
-    } catch (err) {
-      console.log(err);
-    }
-    setInvalid(false);
   };
 
   const handleDeleteImg = (image) => {
@@ -113,8 +100,6 @@ const CreateBlog = (props) => {
       backgroundColor: "white",
     },
   };
-  console.log(blogPost, "this is the context blog");
-
   return (
     <Container maxWidth="lg">
       <Header
@@ -123,44 +108,46 @@ const CreateBlog = (props) => {
         navigationBtnLabel={"Blog"}
       />
       <Paper style={styles.root}>
-        <Container maxWidth="sm" align="center">
+        <Container maxWidth="sm" align="center" id="formData">
           <Card raised style={styles.card}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  name="title"
-                  variant="outlined"
-                  label="Title"
-                  fullWidth
-                  onChange={(e) => handleValueChange(e)}
-                />
+            <form enctype="multipart/form-data" action="">
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    name="title"
+                    variant="outlined"
+                    label="Title"
+                    fullWidth
+                    onChange={(e) => handleValueChange(e)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    name="description"
+                    variant="outlined"
+                    label="Description"
+                    multiline
+                    onChange={(e) => handleValueChange(e)}
+                    rows={8}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid xs={12} item>
+                  <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    value={blog.date}
+                    label="Date"
+                    onChange={(data) => handleDateChange(data)}
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  name="description"
-                  variant="outlined"
-                  label="Description"
-                  multiline
-                  onChange={(e) => handleValueChange(e)}
-                  rows={8}
-                  fullWidth
-                />
-              </Grid>
-              <Grid xs={12} item>
-                <KeyboardDatePicker
-                  disableToolbar
-                  variant="inline"
-                  format="MM/dd/yyyy"
-                  margin="normal"
-                  value={blog.date}
-                  label="Date"
-                  onChange={(data) => handleDateChange(data)}
-                  KeyboardButtonProps={{
-                    "aria-label": "change date",
-                  }}
-                />
-              </Grid>
-            </Grid>
+            </form>
           </Card>
           <Button
             disabled={invalid}
@@ -168,7 +155,7 @@ const CreateBlog = (props) => {
             variant="contained"
             color={invalid ? "secondary" : "primary"}
             type="submit"
-            onClick={() => onSubmit(blog)}
+            onClick={() => submitPost()}
           >
             Create Post
           </Button>
@@ -176,19 +163,11 @@ const CreateBlog = (props) => {
             accept="image/*"
             id="icon-button-file"
             type="file"
+            name="file"
             style={styles.input}
             onChange={(e) => handleFileSelector(e)}
           />
-          <label htmlFor="icon-button-file">
-            <IconButton
-              color="primary"
-              aria-label="upload picture"
-              component="span"
-            >
-              <PhotoCamera />
-            </IconButton>
-          </label>
-          <Grid item container justify="center" spacing={1}>
+          {/* <Grid item container justify="center" spacing={1}>
             {blog.images.length > 0 &&
               blog.images.map((image, index) => (
                 <Grid item xs key={index}>
@@ -199,7 +178,7 @@ const CreateBlog = (props) => {
                   />
                 </Grid>
               ))}
-          </Grid>
+          </Grid> */}
         </Container>
       </Paper>
     </Container>

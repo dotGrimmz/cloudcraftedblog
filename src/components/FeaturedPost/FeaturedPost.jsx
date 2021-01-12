@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MainFeaturedPost(props) {
   const classes = useStyles();
   const { post, navigateToFeature } = props;
+  console.log(post, "post in the previews");
   return (
     <Paper
       className={classes.mainFeaturedPost}

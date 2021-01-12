@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Container from "@material-ui/core/Container";
 import Header from "../Header/Header";
 import { useHistory } from "react-router-dom";
@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import Footer from "../Footer/Footer";
 import CCContext from "../../context/CCContext";
 import CloudCraftedService from "../../service/CloudCraftedService";
+import Typography from "@material-ui/core/Typography";
 
 const LoginPage = (props) => {
   const history = useHistory();
@@ -20,6 +21,15 @@ const LoginPage = (props) => {
     userName: "",
     password: "",
   });
+
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    let resetError = () => {
+      setIsError(false);
+    };
+    setTimeout(resetError, 2000);
+  }, [isError]);
 
   const navigateToHome = () => {
     history.push("/home");
@@ -65,6 +75,12 @@ const LoginPage = (props) => {
     },
   };
 
+  let errorMessage = (
+    <Typography color="error" align="center">
+      "Now stop being lazy ... type something my guy!"
+    </Typography>
+  );
+
   return (
     <>
       <Container maxWidth="lg" pb={2}>
@@ -95,7 +111,7 @@ const LoginPage = (props) => {
             style={styles.input}
             size="small"
           />
-          <Box align="center">
+          <Box align="center" component="div" flexDirection="column">
             <Button
               variant="contained"
               color="primary"
@@ -105,6 +121,7 @@ const LoginPage = (props) => {
               Log In
             </Button>
           </Box>
+          {isError && errorMessage}
         </Container>
       </Container>
       <Footer navigateToHome={navigateToHome} />

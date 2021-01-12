@@ -28,3 +28,13 @@
   font-family: cursive;
   text-align: right;
 }
+
+.card {
+  background-image: url("../images/background.png");
+  background-size: cover;
+  height: auto;
+  background-color: gray;
+  max-width: 100%;
+  background-repeat: no-repeat;
+  background-position: 20% 20%;
+}

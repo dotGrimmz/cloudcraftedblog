@@ -39,7 +39,7 @@ class ContextImplementation extends Component {
     setFeaturedPagePost: this.setFeaturedPagePost,
     setUser: this.setUser,
     logOut: this.logOut,
-    blogPost: {},
+    blogPost: [],
     setBlogPost: this.setBlogPost,
   };
 

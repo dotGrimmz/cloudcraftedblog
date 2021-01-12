@@ -1,18 +1,14 @@
 const mongoose = require("mongoose");
 const UserDomain = require("../Domains/UserDomain");
 const BlogDomain = require("../Domains/BlogDomain");
-const multer = require("multer");
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "/ccb/my-uploads");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + "-" + Date.now());
-  },
-});
-
-const upload = multer({ storage: storage });
+const upload = require("../Middleware/Upload");
+const AAMDomain = require("../Domains/ApexAutoMoversDomain");
+const path = require("path");
+const distance = require("google-distance-matrix");
+distance.key("AIzaSyDZztUmOUlMh9YRZTEQ3jkJeTCt8tt0AYw");
+distance.units("imperial");
+distance.avoid("tolls");
+distance.mode("driving");
 
 class CloudService {
   imageType = ["image/jpeg", "image/png", "image/gif"];
@@ -36,27 +32,58 @@ class CloudService {
       });
   }
 
+  // the answers are in multer.. you need to figure out
+  // how to configure the destination.. which is our mongo database
+
   createBlog(req, res) {
-    const { title, date, description, images } = req.body;
-    console.log(images, "this is working");
-    const blog = new BlogDomain({
+    console.log(req.body);
+    const { title, date, description } = req.body;
+
+    const user = req.params.id;
+    // console.log(req, "this is the body from the backend service");
+    // res.sendFile(path.join(`${__dirname}/../views/index.html`));
+    // console.log(path, "this is the path from the backend");
+
+    new BlogDomain({
       title,
       date,
       description,
-    });
+      user,
+    })
+      .save()
+      .then(() => {
+        res.send(req.body);
+      });
     // this.saveImages(images);
   }
 
-  // saveImages(images, imageEncoded) {
-  //   if (imageEncoded === null) return;
-  //   let img = JSON.parse(imageEncoded);
+  getAllBlogs(req, res) {
+    BlogDomain.find().then((posts) => {
+      res.send(posts);
+    });
+  }
 
-  //   images.map((image) => {
-  //     if (image === null && imageType.includes(img.type)) {
-  //       BlogDomain.images = new Buffer.from(img.data, "base64");
-  //     }
-  //   });
-  // }
+  calculateDistance(req, res) {
+    let origins = [req.body.origin];
+    let destinations = [req.body.destination];
+
+    distance.matrix(origins, destinations, (err, distances) => {
+      if (err) {
+        return console.error(err);
+      }
+      if (!distances) {
+        return res.send("NO DISTANCES");
+      }
+
+      if (distances.status == "OK") {
+        let travelData = {
+          distance: distances.rows[0].elements[0].distance.text,
+          duration: distances.rows[0].elements[0].duration.text,
+        };
+        res.send(travelData);
+      }
+    });
+  }
 }
 
 module.exports = CloudService;
